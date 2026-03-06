@@ -1,0 +1,28 @@
+@startuml UsoBiblioteca
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Bibliotecario" as B
+actor "Estudiante" as E
+
+rectangle "Sistema de Gestión de Biblioteca" {
+    usecase "Registrar/Actualizar Libro y Autor" as UC1
+    usecase "Eliminar Registro Obsoleto" as UC2
+    usecase "Consultar Disponibilidad" as UC3
+    usecase "Registrar Préstamo" as UC4
+    usecase "Validar Disponibilidad" as UC_Val
+    usecase "Registrar Devolución" as UC5
+    usecase "Notificar Devolución Pendiente" as UC6
+    
+    B -- UC1
+    B -- UC2
+    B -- UC3
+    B -- UC4
+    B -- UC5
+    
+    E -- UC3
+    
+    UC4 ..> UC_Val : <<include>>
+    UC5 <.. UC6 : <<extend>> (Si hay retraso)
+}
+@enduml
