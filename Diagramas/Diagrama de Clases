@@ -1,1 +1,61 @@
+@startuml ClasesBiblioteca
+skinparam classAttributeIconSize 0
 
+class Persona {
+    # id: String
+    # nombre: String
+    # email: String
+}
+
+class Autor {
+    - nacionalidad: String
+}
+
+class Estudiante {
+    - carrera: String
+    + consultarLibros(): List<Libro>
+}
+
+class Libro {
+    - isbn: String
+    - titulo: String
+    + actualizarInfo(titulo, isbn)
+}
+
+class Ejemplar {
+    - codigoUnico: String
+    - estado: EstadoLibro
+    + estaDisponible(): Boolean
+    + marcarPrestado()
+    + marcarDisponible()
+}
+
+enum EstadoLibro {
+    DISPONIBLE
+    PRESTADO
+    OBSOLETO
+}
+
+class Prestamo {
+    - fechaPrestamo: Date
+    - fechaDevolucionEsperada: Date
+    - fechaDevolucionReal: Date
+    + calcularMora(): Double
+}
+
+' Relaciones
+Persona <|-- Estudiante : Herencia
+Persona <|-- Autor : Herencia
+
+Libro "1" o-- "1..*" Autor : Agregar (Un autor puede estar en varios libros)
+Libro "1" *-- "1..*" Ejemplar : Composición (El ejemplar depende del Libro)
+
+Estudiante "1" -- "0..*" Prestamo : Realiza
+Ejemplar "1" -- "0..*" Prestamo : Es objeto de
+
+note right of Prestamo
+  La historia 5 requiere 
+  verificar fechaDevolucionReal
+end note
+
+@enduml
